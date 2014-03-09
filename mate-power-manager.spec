@@ -1,11 +1,11 @@
 Summary:	MATE Power Manager
 Name:		mate-power-manager
-Version:	1.6.3
+Version:	1.8.0
 Release:	1
 License:	GPL v2
 Group:		X11/Applications
-Source0:	http://pub.mate-desktop.org/releases/1.6/%{name}-%{version}.tar.xz
-# Source0-md5:	ec9e4784ca6a56d2d78d892d26bc5da6
+Source0:	http://pub.mate-desktop.org/releases/1.8/%{name}-%{version}.tar.xz
+# Source0-md5:	09688f0422adce20de79f17d2f7a07b0
 URL:		http://www.mate.org/projects/mate-power-manager/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -14,14 +14,13 @@ BuildRequires:	libcanberra-gtk-devel
 BuildRequires:	libnotify-devel
 BuildRequires:	libtool
 BuildRequires:	libunique-devel
-BuildRequires:	mate-doc-utils
-BuildRequires:	mate-panel-devel
+BuildRequires:	mate-panel-devel >= 1.8.0
 BuildRequires:	pkg-config
 BuildRequires:	systemd-devel
+BuildRequires:	yelp-tools
 Requires(post,postun):	/usr/bin/gtk-update-icon-cache
 Requires(post,postun):	glib-gio-gsettings
 Requires(post,postun):	hicolor-icon-theme
-Requires(post,postun):	rarian
 Requires:	upower
 Requires:	xdg-desktop-notification-daemon
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -65,7 +64,6 @@ Allows user to inhibit automatic power saving.
 %{__autoconf}
 %configure \
 	--disable-schemas-compile	\
-	--disable-scrollkeeper		\
 	--disable-silent-rules
 %{__make}
 
@@ -80,18 +78,16 @@ rm -rf $RPM_BUILD_ROOT
 %{__rm} $RPM_BUILD_ROOT%{_datadir}/MateConf/gsettings/*.convert
 %{__rm} -r $RPM_BUILD_ROOT%{_datadir}/locale/{ca@valencia,en@shaw}
 
-%find_lang %{name} --with-mate --with-omf
+%find_lang %{name} --with-mate
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post
-%scrollkeeper_update_post
 %update_icon_cache hicolor
 %update_gsettings_cache
 
 %postun
-%scrollkeeper_update_postun
 %update_icon_cache hicolor
 %update_gsettings_cache
 
