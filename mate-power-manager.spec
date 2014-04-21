@@ -1,11 +1,15 @@
 Summary:	MATE Power Manager
 Name:		mate-power-manager
 Version:	1.8.0
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		X11/Applications
 Source0:	http://pub.mate-desktop.org/releases/1.8/%{name}-%{version}.tar.xz
 # Source0-md5:	09688f0422adce20de79f17d2f7a07b0
+Patch0:		8cb168b752f4130e88daefa400bb9bf07cf18227.diff
+Patch1:		2b3cf01f84204dd5d8204d519e2167b41cda6bc0.diff
+Patch2:		220a4e0a64aca0579f50e6e57d4eca848b3ac57f.diff
+Patch3:		d59f4b8bd38e1628af3a992ae8e96b8e069ab738.diff
 URL:		http://www.mate.org/projects/mate-power-manager/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -17,11 +21,12 @@ BuildRequires:	libunique-devel
 BuildRequires:	mate-panel-devel >= 1.8.0
 BuildRequires:	pkg-config
 BuildRequires:	systemd-devel
+BuildRequires:	upower-devel
 BuildRequires:	yelp-tools
 Requires(post,postun):	/usr/bin/gtk-update-icon-cache
 Requires(post,postun):	glib-gio-gsettings
 Requires(post,postun):	hicolor-icon-theme
-Requires:	upower
+Requires:	upower >= 0.99
 Requires:	xdg-desktop-notification-daemon
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -48,6 +53,13 @@ Allows user to inhibit automatic power saving.
 %prep
 %setup -q
 
+# https://github.com/mate-desktop/mate-power-manager/pull/60
+%patch0 -p1
+# upower 0.99 support
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
+
 # kill mate-common deps
 %{__sed} -i -e '/MATE_COMPILE_WARNINGS.*/d'	\
     -i -e '/MATE_MAINTAINER_MODE_DEFINES/d'	\
@@ -63,8 +75,9 @@ Allows user to inhibit automatic power saving.
 %{__automake}
 %{__autoconf}
 %configure \
-	--disable-schemas-compile	\
-	--disable-silent-rules
+	--disable-schemas-compile   \
+	--disable-silent-rules	    \
+	--enable-unique
 %{__make}
 
 %install
