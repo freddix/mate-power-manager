@@ -1,15 +1,12 @@
 Summary:	MATE Power Manager
 Name:		mate-power-manager
-Version:	1.8.0
-Release:	2
+Version:	1.8.1
+Release:	1
 License:	GPL v2
 Group:		X11/Applications
 Source0:	http://pub.mate-desktop.org/releases/1.8/%{name}-%{version}.tar.xz
-# Source0-md5:	09688f0422adce20de79f17d2f7a07b0
+# Source0-md5:	c1c4e7e208f116a6daab8d0f92b82f6d
 Patch0:		8cb168b752f4130e88daefa400bb9bf07cf18227.diff
-Patch1:		2b3cf01f84204dd5d8204d519e2167b41cda6bc0.diff
-Patch2:		220a4e0a64aca0579f50e6e57d4eca848b3ac57f.diff
-Patch3:		d59f4b8bd38e1628af3a992ae8e96b8e069ab738.diff
 URL:		http://www.mate.org/projects/mate-power-manager/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -55,10 +52,6 @@ Allows user to inhibit automatic power saving.
 
 # https://github.com/mate-desktop/mate-power-manager/pull/60
 %patch0 -p1
-# upower 0.99 support
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
 
 # kill mate-common deps
 %{__sed} -i -e '/MATE_COMPILE_WARNINGS.*/d'	\
@@ -107,7 +100,6 @@ rm -rf $RPM_BUILD_ROOT
 %files -f %{name}.lang
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog NEWS README TODO
-%attr(755,root,root) %{_bindir}/mate-power-bugreport.sh
 %attr(755,root,root) %{_bindir}/mate-power-manager
 %attr(755,root,root) %{_bindir}/mate-power-preferences
 %attr(755,root,root) %{_bindir}/mate-power-statistics
